@@ -60,7 +60,9 @@ def fetch_latest_posts():
 
 @app.route('/feeds/indiasky')
 def home():
-    return {"hello": "world"}
+    post_uris = fetch_latest_posts()
+    feed_skeleton = {"feed": [{"post": uri} for uri in post_uris]}
+    return feed_skeleton
 
 
 @app.route('/feeds/about')
