@@ -1,16 +1,10 @@
 from atproto import Client, models
-from dotenv import load_dotenv
-import os
-
-load_dotenv()
-
-admin_handle = os.getenv('admin_handle')
-admin_password = os.getenv('admin_password')
+from api.config import config
 
 def add_user_to_list(did, list_uri):
     client = Client()
     try:
-        client.login('admin_handle', 'admin_password')
+        client.login(config.HANDLE, config.PASSWORD)
         add_item = client.app.bsky.graph.list.add_item(
             models.AppBskyGraphListAddItem.Data(
                 list=list_uri,
