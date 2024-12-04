@@ -1,5 +1,6 @@
 from flask import Flask
 from atproto import Client
+from api.services.user_management import add_user_to_list
 from itertools import compress
 from datetime import datetime, timezone
 from tqdm.contrib.concurrent import thread_map
@@ -68,3 +69,19 @@ def home():
 @app.route('/feeds/about')
 def about():
     return 'About'
+
+@app.route('/add_user_to_list', methods=['POST'])
+def add_user():
+    content_type = request.headers.get('Content-Type')
+    if content_type == 'application/json':
+        data = request.json
+        list_uri = data.get('list_uri')
+        user_did = data.get('user_did')
+        
+        if not list_uri or not user_did:
+            return jsonify({'error': 'Missing list_uri or user_did'}), 400
+        
+        result = add_user_to_list(user_did, list_uri)
+        return jsonify({'result': result})
+    else:
+        return jsonify({'error': 'Content-Type not supported'}), 415
