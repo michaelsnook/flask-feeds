@@ -1,13 +1,16 @@
 import os
+from dotenv import load_dotenv
 from textwrap import dedent
 
+load_dotenv()
+
 # Bluesky username
-HANDLE = "michaelsnook.com"
+HANDLE = os.getenv('BLUESKY_USERNAME')
 
 # Bluesky app password, available via: https://bsky.app/settings/app-passwords
-PASSWORD = os.environ["BLUESKY_APP_PASSWORD"]
+PASSWORD = os.getenv('BLUESKY_APP_PASSWORD')
 
-# Domain provided by Cloudflare pages
+# Domain where the feed is hosted
 SERVICE_DOMAIN = "flask-feeds.vercel.app"
 
 # Feed Details
