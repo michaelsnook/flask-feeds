@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from atproto import Client
 from api.services.user_management import add_user_to_list
-from itertools import compress
 from datetime import datetime, timezone
 from tqdm.contrib.concurrent import thread_map
 import api.config as config
@@ -55,15 +54,29 @@ def fetch_latest_posts():
         feed.extend(data.feed)
 
     sorted_feed = rank_posts(feed)
+    return sorted_feed
+
+
+def fetch_latest_post_uris():
+    sorted_feed = fetch_latest_posts()
     post_uris = [item.post.uri for item in sorted_feed]
     return post_uris
 
 
-@app.route('/feeds/indiasky')
-def home():
-    post_uris = fetch_latest_posts()
+@app.route('/feeds/indiasky/skeleton')
+def indiasky_skeleton():
+    post_uris = fetch_latest_post_uris()
     feed_skeleton = {"feed": [{"post": uri} for uri in post_uris]}
     return feed_skeleton
+
+
+@app.route('/feeds/indiasky/posts')
+def indiasky_posts():
+    posts = fetch_latest_posts()
+    feed_posts = {
+        "feed": [item.post.dict() for item in posts]
+    }
+    return feed_posts
 
 
 @app.route('/feeds/about')
