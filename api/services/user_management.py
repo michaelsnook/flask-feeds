@@ -1,5 +1,5 @@
 from atproto import Client, models
-from api.config import config
+import api.config as config
 
 def add_user_to_list(did, list_uri):
     client = Client()
