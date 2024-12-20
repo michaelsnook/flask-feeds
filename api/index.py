@@ -74,20 +74,7 @@ def indiasky_skeleton():
 def indiasky_posts():
     posts = fetch_latest_posts()
     feed_posts = {
-        "feed": [{
-            "uri": item.post.uri,
-            "author": {
-                "avatar": item.post.author.avatar,
-                "did": item.post.author.did,
-                "handle": item.post.author.handle,
-                "display_name": item.post.author.display_name,
-            },
-            "like_count": item.post.like_count,
-            "quote_count": item.post.quote_count,
-            "reply_count": item.post.reply_count,
-            "repost_count": item.post.repost_count,
-            "post": item.post.record.json()
-        } for item in posts]
+        "feed": [item.post.dict() for item in posts]
     }
     return feed_posts
 
